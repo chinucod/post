@@ -19,6 +19,9 @@ background-color: #A6FF96;
 const Boxe = styled.div`
 margin: 10px 0px;
 `;
+const Sp=styled.div` 
+padding: 10px;
+`;
 const Home = () => {
     const [posts, setPosts] = useState([]);
   useEffect(() => {
@@ -34,14 +37,19 @@ const Home = () => {
         <Boxe>
             <Card sx={{height:300, backgroundColor:'#F3FDE7',borderRadius:5,width: 320}}>
                 <CardContent>
-                    <Typography gutterBottom variant='h5' component='div'>
+                    <Typography sx={{ fontSize: 18 }} gutterBottom variant='h1' component='div'>
                         {item.title}
                     </Typography>
+                    <Sp></Sp>
                     <Typography variant='body2' color='text.secondary'>
                         {item.body}
                     </Typography>
-                    
                 </CardContent>
+                <CardActions>
+                    <div style={{ marginTop: 'auto' }}>
+                        <Button sx={{color:'red'}}>Delete</Button>
+                    </div>    
+                </CardActions>
             </Card>
         </Boxe>
         ))}
