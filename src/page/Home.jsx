@@ -22,18 +22,55 @@ margin: 10px 0px;
 const Sp=styled.div` 
 padding: 10px;
 `;
+const Input = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute; 
+  top: 10px; 
+  left: 10px; 
+`;
+
+
+
+
 const Home = () => {
     const [posts, setPosts] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredPosts, setFilteredPosts] = useState([]);
+
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/posts')
       .then((response) => response.json())
       .then((data) => setPosts(data))
       .catch((error) => console.error('Error fetching data:', error));
-      console.log('posts', posts)
   }, []);
+  useEffect(() => {
+    const filtered = posts.filter((post) =>
+      post.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredPosts(filtered);
+  }, [searchQuery, posts]);
+
+  const handleDeleteClick = (postId) => {
+    const updatedPosts = posts.filter((post) => post.id !== postId);
+    setPosts(updatedPosts);
+  };
+
+
   return (
+    <div>
+    <Input>
+      <input
+        type="text"
+        placeholder="Search..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      <button onClick={() => setSearchQuery('')}>Clear</button>
+      <button onClick={() => setSearchQuery(searchQuery)}>Search</button>
+    </Input>
     <Container>
-    {posts.map((item)=>(
+      {filteredPosts.map((item) => (
         <Boxe>
             <Card sx={{height:300, backgroundColor:'#F3FDE7',borderRadius:5,width: 320}}>
                 <CardContent>
@@ -47,7 +84,7 @@ const Home = () => {
                 </CardContent>
                 <CardActions>
                     <div style={{ marginTop: 'auto' }}>
-                        <Button sx={{color:'red'}}>Delete</Button>
+                        <Button sx={{color:'red'}} onClick={()=>handleDeleteClick(item.id)}>Delete</Button>
                     </div>    
                 </CardActions>
             </Card>
@@ -55,6 +92,7 @@ const Home = () => {
         ))}
         
     </Container>
+    </div>
   )
 }
 

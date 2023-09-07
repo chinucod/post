@@ -27,11 +27,6 @@ const Header = () => {
   return (
     <Container>
         <H1>Post Managment</H1>
-        <InputContainer>
-        <SearchIcon />
-        <Input placeholder='Search' type='text' />
-        <button>Search</button>
-        </InputContainer>
     </Container>
   )
 }
