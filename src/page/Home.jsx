@@ -30,12 +30,12 @@ const Input = styled.div`
   left: 10px; 
 `;
 
-
-
-
 const Home = () => {
+    const [inputValue,setInputValue]=useState('');
+    const [id,setId]=useState('');
+    const [open,setOpen]=useState(false);
     const [posts, setPosts] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState((localStorage.getItem("search")));
     const [filteredPosts, setFilteredPosts] = useState([]);
 
   useEffect(() => {
@@ -55,10 +55,30 @@ const Home = () => {
     const updatedPosts = posts.filter((post) => post.id !== postId);
     setPosts(updatedPosts);
   };
-
+  const handleId=(id)=>{
+      setId(id)
+      setOpen(!open)
+  }
+  localStorage.setItem("search",searchQuery);
 
   return (
+    
     <div>
+    {open && (
+      <div className="popup">
+    <div className="popup-content">
+      
+      <h2>{id}</h2>
+      <input
+        type="text"
+        placeholder="Enter something"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+      />
+      <button  onClick={()=>{setOpen(!open)}} >Close</button>
+    </div>
+  </div>
+    )}
     <Input>
       <input
         type="text"
@@ -71,7 +91,7 @@ const Home = () => {
     </Input>
     <Container>
       {filteredPosts.map((item) => (
-        <Boxe>
+        <Boxe style={{cursor:'pointer'}} onClick={()=>{handleId(item.id)}}>
             <Card sx={{height:300, backgroundColor:'#F3FDE7',borderRadius:5,width: 320}}>
                 <CardContent>
                     <Typography sx={{ fontSize: 18 }} gutterBottom variant='h1' component='div'>
